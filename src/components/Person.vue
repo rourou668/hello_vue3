@@ -1,25 +1,26 @@
 <script lang="ts">
-import { Teleport } from 'vue'
-
 export default {
   name: '',
-  data() {
-    return {
-      name: '张三',
-      age: 18,
-      tel: '1388888888',
+  setup() {
+    //console.log(this)
+    //setup函数中的this是undefined,vue3中已经弱化this了
+    // 数据，原来是写在data中，此时的name,age,tel都不是响应式数据
+    let name = '张三'
+    let age = 18
+    let tel = '1388888888'
+
+    // 方法
+    function changeName() {
+      name = 'zhang-san' //这样修改name，页面是没有变化的
+      console.log(name) //name确实改了，但name不是响应式的，下面的age，tel也是
     }
-  },
-  methods: {
-    changeName() {
-      this.name = 'zhang-san'
-    },
-    changeAge() {
-      this.age += 1
-    },
-    showTel() {
-      alert(this.tel)
-    },
+    function changeAge() {
+      age += 1
+    }
+    function showTel() {
+      alert(tel)
+    }
+    return { name, age, changeName, changeAge, showTel }
   },
 }
 </script>
