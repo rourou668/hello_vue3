@@ -1,18 +1,33 @@
+<!-- 1.setup返回值 -->
+<!-- 2.setup与OptionsAPI -->
+<!-- setup是最早的生命周期，setup不可以读取data，methods（这两个都是vue2），但他们可以读取setup里的数据 -->
+
 <script lang="ts">
 export default {
-  name: '',
+  name: 'Person',
+  data() {
+    return {
+      a: 100,
+      c: this.name,
+      d: 900,
+    }
+  },
+  methods: {
+    b() {
+      console.log('b')
+    },
+  },
   setup() {
-    //console.log(this)
-    //setup函数中的this是undefined,vue3中已经弱化this了
-    // 数据，原来是写在data中，此时的name,age,tel都不是响应式数据
+    //数据
     let name = '张三'
     let age = 18
     let tel = '1388888888'
+    // let x= d
 
     // 方法
     function changeName() {
-      name = 'zhang-san' //这样修改name，页面是没有变化的
-      console.log(name) //name确实改了，但name不是响应式的，下面的age，tel也是
+      name = 'zhang-san'
+      console.log(name)
     }
     function changeAge() {
       age += 1
@@ -21,6 +36,9 @@ export default {
       alert(tel)
     }
     return { name, age, changeName, changeAge, showTel }
+
+    //setup的返回值
+    // return () => '哈哈'
   },
 }
 </script>
@@ -32,6 +50,10 @@ export default {
     <button @click="changeName">修改名字</button>
     <button @click="changeAge">修改年龄</button>
     <button @click="showTel">查看联系方式</button>
+    <hr />
+    <h2>测试1：{{ a }}</h2>
+    <button @click="b">测试2</button>
+    <h2>测试3：{{ c }}</h2>
   </div>
 </template>
 
