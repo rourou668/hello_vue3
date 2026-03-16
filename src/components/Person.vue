@@ -1,26 +1,22 @@
-<script lang="ts">
-export default {
-  name: 'Person',
-}
-</script>
-
 <script lang="ts" setup>
 defineOptions({
   name: 'Person123',
 })
+
+import { ref } from 'vue'
 //数据
-let name = '张三'
-let age = 18
+let name = ref('张三') //想让谁有响应式，就在外面包一个ref
+let age = ref(18)
 let tel = '1388888888'
 let address = '北京'
 
 // 方法
 function changeName() {
-  name = 'zhang-san'
+  name.value = 'zhang-san' //与之对应的要改为xxx.value
   console.log(name)
 }
 function changeAge() {
-  age += 1
+  age.value += 1
 }
 function showTel() {
   alert(tel)
