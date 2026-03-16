@@ -1,8 +1,10 @@
 <script lang="ts">
+import Person from './components/Person.vue'
 //JS或TS
 // 交互
 export default {
   name: 'App', //组件名
+  components: { Person }, //注册组件
 }
 </script>
 
@@ -11,6 +13,7 @@ export default {
   <!-- 结构 -->
   <div class="app">
     <h1>我好啊！</h1>
+    <Person />
   </div>
 </template>
 
