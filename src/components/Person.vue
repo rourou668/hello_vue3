@@ -3,38 +3,30 @@ defineOptions({
   name: 'Person123', //组件名
 })
 
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 //数据
-let car = reactive({ brand: '奔驰', price: 100 })
-//普通对象想变成响应式对象，用reactive包裹，成为Proxy函数
-// console.log(car)
-// console.log(Proxy)
+let car = ref({ brand: '奔驰', price: 100 })
 
-let games = reactive([
+let games = ref([
   { id: 'afafcq4t01', name: '王者荣耀' },
   { id: 'afafcq4t01', name: '原神' },
   { id: 'afafcq4t01', name: '三国志' },
 ])
 
-let obj = reactive({
-  a: {
-    b: {
-      c: 666,
-    },
-  },
-})
+let obj = reactive({ x: 999 })
+console.log(car)
+console.log(obj)
 //方法
 function changePrice() {
-  car.price += 10
-  console.log(car.price)
+  car.value.price += 10
+  console.log(car.value.price)
+  // 用ref的时候，不要忘记.value
+
+  // ref的底层逻辑是reactive
 }
 
 function changeFirstGame() {
-  games[0]!.name = '流星蝴蝶剑'
-}
-
-function changeObj() {
-  obj.a.b.c = 999
+  games.value[0]!.name = '流星蝴蝶剑'
 }
 </script>
 
@@ -50,9 +42,6 @@ function changeObj() {
       <!-- for循环 -->
     </ul>
     <button @click="changeFirstGame">修改游戏名字</button>
-    <hr />
-    <h2>测试：{{ obj.a.b.c }}</h2>
-    <button @click="changeObj">修改数据</button>
   </div>
 </template>
 
