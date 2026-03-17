@@ -1,36 +1,58 @@
 <script lang="ts" setup>
 defineOptions({
-  name: 'Person123',
+  name: 'Person123', //组件名
 })
 
-import { ref } from 'vue'
+import { reactive } from 'vue'
 //数据
-let name = ref('张三') //想让谁有响应式，就在外面包一个ref
-let age = ref(18)
-let tel = '1388888888'
-let address = '北京'
+let car = reactive({ brand: '奔驰', price: 100 })
+//普通对象想变成响应式对象，用reactive包裹，成为Proxy函数
+// console.log(car)
+// console.log(Proxy)
 
-// 方法
-function changeName() {
-  name.value = 'zhang-san' //与之对应的要改为xxx.value
-  console.log(name)
+let games = reactive([
+  { id: 'afafcq4t01', name: '王者荣耀' },
+  { id: 'afafcq4t01', name: '原神' },
+  { id: 'afafcq4t01', name: '三国志' },
+])
+
+let obj = reactive({
+  a: {
+    b: {
+      c: 666,
+    },
+  },
+})
+//方法
+function changePrice() {
+  car.price += 10
+  console.log(car.price)
 }
-function changeAge() {
-  age.value += 1
+
+function changeFirstGame() {
+  games[0]!.name = '流星蝴蝶剑'
 }
-function showTel() {
-  alert(tel)
+
+function changeObj() {
+  obj.a.b.c = 999
 }
 </script>
 
 <template>
   <div class="person">
-    <h2>姓名:{{ name }}</h2>
-    <h2>年龄:{{ age }}</h2>
-    <h2>地址：{{ address }}</h2>
-    <button @click="changeName">修改名字</button>
-    <button @click="changeAge">修改年龄</button>
-    <button @click="showTel">查看联系方式</button>
+    <h2>汽车信息：一辆{{ car.brand }}车，价值{{ car.price }}万</h2>
+    <button @click="changePrice">修改汽车的价格</button>
+    <br />
+    <h2>游戏列表：</h2>
+    <ul>
+      <li v-for="g in games" :key="g.id">{{ g.name }}</li>
+      <!--      item  数据源  遍历的时候每一个节点的唯一标识-->
+      <!-- for循环 -->
+    </ul>
+    <button @click="changeFirstGame">修改游戏名字</button>
+    <hr />
+    <h2>测试：{{ obj.a.b.c }}</h2>
+    <button @click="changeObj">修改数据</button>
   </div>
 </template>
 
@@ -43,5 +65,8 @@ function showTel() {
 }
 button {
   margin: 0 10px;
+}
+li {
+  font-size: 20px;
 }
 </style>
