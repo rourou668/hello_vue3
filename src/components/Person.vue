@@ -12,19 +12,15 @@ defineOptions({
 import { reactive, watch } from 'vue'
 
 // 数据
-// reactive定义的对象不可整体修改
 let person = reactive({
   name: '张三',
   age: 18,
-})
-
-let obj = reactive({
-  a: {
-    b: {
-      c: 666,
-    },
+  car: {
+    c1: '奔驰',
+    c2: '宝马',
   },
 })
+
 // 方法
 function changeName() {
   person.name += '~'
@@ -32,37 +28,55 @@ function changeName() {
 function changeAge() {
   person.age += 1
 }
-function changePerson() {
-  // person的地址值没有变化。
-  Object.assign(person, { name: '李四', age: 80 })
+function changeC1() {
+  person.car.c1 = '奥迪'
 }
-
-function test() {
-  obj.a.b.c = 888
+function changeC2() {
+  person.car.c2 = '大众'
+}
+function changeCar() {
+  person.car = { c1: '雅迪', c2: '爱玛' }
 }
 
 // 监视
-// 情况三：监视【reactive】定义的【对象类型】数据，且默认是开启深度监视的
-watch(person, (newValue, oldValue) => {
-  console.log('person变化了', newValue, oldValue)
-})
+// getter函数：能返回一个值的函数
+// watch(
+//   // 若该属性不是对象类型，需要写成函数形式
+//   () => person.name,
+//   (newValue, oldValue) => {
+//     console.log('person.name变化了', newValue, oldValue)
+//   },
+// )
 
-watch(obj, (newValue, oldValue) => {
-  console.log('obj变化了', newValue, oldValue)
-})
+// 若该属性是对象类型，可直接编，也可写成函数式，建议写成函数式
+// watch(person.car, (newValue, oldValue) => {
+//   console.log('person.car变化了', newValue, oldValue)
+// })
+
+// 此时监视的是对象的地址值
+watch(
+  () => person.car,
+  (newValue, oldValue) => {
+    console.log('person.car变化了', newValue, oldValue)
+  },
+  // 关注对象的内部，需要手动开启深度监视
+  {
+    deep: true,
+  },
+)
 </script>
 
 <template>
   <div class="person">
-    <h1>情况三：监视【reactive】定义的【对象类型】数据</h1>
-    <h2>姓名：{{ person.name }}</h2>
-    <h2>年龄：{{ person.age }}</h2>
+    <h1>情况四：监视【ref】或【reactive】定义的【对象类型】数据中的某个属性</h1>
+    <h2>姓名:{{ person.name }}</h2>
+    <h2>年龄:{{ person.age }}</h2>
+    <h2>汽车:{{ person.car.c1 }}、{{ person.car.c2 }}</h2>
     <button @click="changeName">修改名字</button>
     <button @click="changeAge">修改年龄</button>
-    <button @click="changePerson">all in</button>
-    <hr />
-    <h2>测试：{{ obj.a.b.c }}</h2>
-    <button @click="test">修改obj.a.b.c</button>
+    <button @click="changeC1">修改第一台车</button>
+    <button @click="changeC2">修改第二台车</button>
+    <button @click="changeCar">修改第整个车</button>
   </div>
 </template>
 
